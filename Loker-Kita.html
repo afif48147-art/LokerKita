@@ -1,0 +1,1970 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>LokerKita - Cari Lowongan Kerja</title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f7fb;
+      color: #172033;
+    }
+
+    header {
+      background: white;
+      padding: 15px 6%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,.06);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #1261ff;
+    }
+
+    .logo span {
+      color: #172033;
+    }
+
+    .header-buttons {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .login-btn,
+    .register-btn {
+      border: none;
+      padding: 10px 15px;
+      border-radius: 9px;
+      font-weight: bold;
+    }
+
+    .login-btn {
+      background: #edf3ff;
+      color: #1261ff;
+    }
+
+    .register-btn {
+      background: #1261ff;
+      color: white;
+    }
+
+    .profile-btn {
+      border: none;
+      background: #1261ff;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 9px;
+      font-weight: bold;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #1261ff, #6a5cff);
+      color: white;
+      padding: 55px 6%;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 38px;
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      margin-bottom: 25px;
+      opacity: .9;
+    }
+
+    .search-box {
+      max-width: 850px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 1fr 200px 100px;
+      gap: 10px;
+    }
+
+    .search-box input,
+    .search-box select {
+      border: none;
+      padding: 14px;
+      border-radius: 9px;
+      outline: none;
+    }
+
+    .search-btn {
+      border: none;
+      padding: 14px;
+      border-radius: 9px;
+      background: #172033;
+      color: white;
+      font-weight: bold;
+    }
+
+    .container {
+      width: 88%;
+      max-width: 1100px;
+      margin: 40px auto;
+    }
+
+    .section-title {
+      margin-bottom: 20px;
+    }
+
+    .jobs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .job-card {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,.06);
+    }
+
+    .job-card h3 {
+      margin-bottom: 9px;
+    }
+
+    .company {
+      color: #1261ff;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .location {
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .salary {
+      display: inline-block;
+      padding: 7px 9px;
+      background: #eaf1ff;
+      color: #1261ff;
+      border-radius: 7px;
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+
+    .card-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .detail-btn,
+    .save-btn {
+      flex: 1;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      font-weight: bold;
+    }
+
+    .detail-btn {
+      background: #1261ff;
+      color: white;
+    }
+
+    .save-btn {
+      background: #edf3ff;
+      color: #1261ff;
+    }
+
+    .empty {
+      background: white;
+      padding: 40px;
+      text-align: center;
+      border-radius: 15px;
+      color: #777;
+    }
+
+    .loading {
+      background: white;
+      padding: 30px;
+      text-align: center;
+      border-radius: 15px;
+      color: #777;
+      grid-column: 1 / -1;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.55);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .modal-content {
+      width: 100%;
+      max-width: 550px;
+      background: white;
+      border-radius: 18px;
+      padding: 25px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .close {
+      float: right;
+      font-size: 26px;
+      cursor: pointer;
+    }
+
+    .modal-content h2 {
+      margin-bottom: 15px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 9px;
+      outline: none;
+    }
+
+    .form-group textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 13px;
+      background: #1261ff;
+      color: white;
+      border: none;
+      border-radius: 9px;
+      font-weight: bold;
+    }
+
+    .profile-box {
+      background: white;
+      padding: 20px;
+      border-radius: 14px;
+      margin-bottom: 15px;
+    }
+
+    .profile-box p {
+      margin: 9px 0;
+    }
+
+    .logout-btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 9px;
+      background: #ef4444;
+      color: white;
+      font-weight: bold;
+    }
+
+    .application {
+      border: 1px solid #eee;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .status {
+      display: inline-block;
+      margin-top: 8px;
+      background: #fff3cd;
+      color: #856404;
+      padding: 5px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+    }
+
+    .error-message {
+      color: #dc2626;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    footer {
+      margin-top: 60px;
+      padding: 30px;
+      background: #172033;
+      color: white;
+      text-align: center;
+    }
+
+    @media(max-width:800px) {
+
+      .jobs {
+        grid-template-columns: 1fr;
+      }
+
+      .search-box {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: 30px;
+      }
+
+      .header-buttons {
+        gap: 5px;
+      }
+
+      .login-btn,
+      .register-btn,
+      .profile-btn {
+        padding: 8px 10px;
+        font-size: 12px;
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+<header>
+
+  <div class="logo">
+    Loker<span>Kita</span>
+  </div>
+
+  <div class="header-buttons" id="headerButtons">
+
+    <button
+      class="login-btn"
+      onclick="openLogin()">
+      Login
+    </button>
+
+    <button
+      class="register-btn"
+      onclick="openRegister()">
+      Daftar
+    </button>
+
+  </div>
+
+</header>
+
+
+<section class="hero">
+
+  <h1>
+    Cari Kerja Lebih Mudah
+  </h1>
+
+  <p>
+    Temukan pekerjaan yang sesuai dengan kemampuanmu.
+  </p>
+
+  <div class="search-box">
+
+    <input
+      id="searchInput"
+      type="text"
+      placeholder="Contoh: Admin, Kasir, Operator..."
+    >
+
+    <select id="locationFilter">
+
+      <option value="">
+        Semua Lokasi
+      </option>
+
+      <option value="Cirebon">
+        Cirebon
+      </option>
+
+      <option value="Bandung">
+        Bandung
+      </option>
+
+      <option value="Jakarta">
+        Jakarta
+      </option>
+
+    </select>
+
+    <button
+      class="search-btn"
+      onclick="searchJobs()">
+
+      Cari🔍
+
+    </button>
+
+  </div>
+
+</section>
+
+
+<div class="container">
+
+  <h2 class="section-title">
+    Lowongan Terbaru
+  </h2>
+
+  <div
+    id="jobsContainer"
+    class="jobs">
+
+    <div class="loading">
+      Memuat lowongan...
+    </div>
+
+  </div>
+
+</div>
+
+
+<footer>
+
+  <p>
+    © 2026 LokerKita
+  </p>
+
+  <p>
+    Temukan pekerjaan. Bangun masa depan.
+  </p>
+
+</footer>
+
+
+<!-- DETAIL LOWONGAN -->
+
+<div
+  class="modal"
+  id="detailModal">
+
+  <div class="modal-content">
+
+    <span
+      class="close"
+      onclick="closeModal('detailModal')">
+      ×
+    </span>
+
+    <div id="jobDetail"></div>
+
+  </div>
+
+</div>
+
+
+<!-- REGISTER -->
+
+<div
+  class="modal"
+  id="registerModal">
+
+  <div class="modal-content">
+
+    <span
+      class="close"
+      onclick="closeModal('registerModal')">
+      ×
+    </span>
+
+    <h2>
+      Buat Akun LokerKita
+    </h2>
+
+    <br>
+
+    <form id="registerForm">
+
+      <div class="form-group">
+
+        <label>
+          Nama Lengkap
+        </label>
+
+        <input
+          id="registerName"
+          type="text"
+          required
+          placeholder="Nama kamu"
+        >
+
+      </div>
+
+      <div class="form-group">
+
+        <label>
+          Email
+        </label>
+
+        <input
+          id="registerEmail"
+          type="email"
+          required
+          placeholder="contoh@email.com"
+        >
+
+      </div>
+
+      <div class="form-group">
+
+        <label>
+          Password
+        </label>
+
+        <input
+          id="registerPassword"
+          type="password"
+          required
+          minlength="6"
+          placeholder="Minimal 6 karakter"
+        >
+
+      </div>
+
+      <button
+        class="submit-btn"
+        type="submit">
+
+        Daftar Sekarang
+
+      </button>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<!-- LOGIN -->
+
+<div
+  class="modal"
+  id="loginModal">
+
+  <div class="modal-content">
+
+    <span
+      class="close"
+      onclick="closeModal('loginModal')">
+      ×
+    </span>
+
+    <h2>
+      Login
+    </h2>
+
+    <br>
+
+    <form id="loginForm">
+
+      <div class="form-group">
+
+        <label>
+          Email
+        </label>
+
+        <input
+          id="loginEmail"
+          type="email"
+          required
+        >
+
+      </div>
+
+      <div class="form-group">
+
+        <label>
+          Password
+        </label>
+
+        <input
+          id="loginPassword"
+          type="password"
+          required
+        >
+
+      </div>
+
+      <button
+        class="submit-btn"
+        type="submit">
+
+        Login
+
+      </button>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<!-- PROFILE -->
+
+<div
+  class="modal"
+  id="profileModal">
+
+  <div class="modal-content">
+
+    <span
+      class="close"
+      onclick="closeModal('profileModal')">
+      ×
+    </span>
+
+    <h2>
+      Profil Saya
+    </h2>
+
+    <br>
+
+    <div
+      class="profile-box"
+      id="profileInfo">
+    </div>
+
+    <h3>
+      Riwayat Lamaran
+    </h3>
+
+    <br>
+
+    <div id="applicationList">
+    </div>
+
+    <br>
+
+    <button
+      class="logout-btn"
+      onclick="logout()">
+
+      Logout
+
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const SUPABASE_URL =
+  "https://dyaigwvuntasbovzbmaf.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_Srg2JzdhWBroeJ8UvP1g1g_GzmW449T";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+
+/* =========================
+   DATA
+========================= */
+
+let jobs = [];
+
+let currentUser = null;
+
+let currentProfile = null;
+
+
+/* =========================
+   DISPLAY JOBS
+========================= */
+
+function displayJobs(data = jobs) {
+
+  const container =
+    document.getElementById("jobsContainer");
+
+  container.innerHTML = "";
+
+  if (!data || data.length === 0) {
+
+    container.innerHTML = `
+
+      <div class="empty">
+
+        <h3>
+          Lowongan tidak ditemukan
+        </h3>
+
+        <p>
+          Belum ada lowongan yang tersedia.
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+  }
+
+
+  data.forEach(job => {
+
+    container.innerHTML += `
+
+      <div class="job-card">
+
+        <h3>
+          ${escapeHtml(job.title)}
+        </h3>
+
+        <div class="company">
+          ${escapeHtml(job.company)}
+        </div>
+
+        <div class="location">
+          📍 ${escapeHtml(job.location)}
+        </div>
+
+        <div class="salary">
+          ${escapeHtml(job.salary)}
+        </div>
+
+        <div class="card-buttons">
+
+          <button
+            class="detail-btn"
+            onclick="showJobDetail('${job.id}')">
+
+            Lihat Detail
+
+          </button>
+
+          <button
+            class="save-btn"
+            onclick="saveJob('${job.id}')">
+
+            ❤️
+
+          </button>
+
+        </div>
+
+      </div>
+
+    `;
+
+  });
+
+}
+
+
+/* =========================
+   LOAD JOBS
+========================= */
+
+async function loadJobs() {
+
+  const container =
+    document.getElementById("jobsContainer");
+
+  container.innerHTML = `
+
+    <div class="loading">
+      Memuat lowongan...
+    </div>
+
+  `;
+
+
+  const { data, error } =
+    await supabaseClient
+      .from("jobs")
+      .select("*")
+      .order("created_at", {
+        ascending: false
+      });
+
+
+  if (error) {
+
+    console.error(error);
+
+    container.innerHTML = `
+
+      <div class="empty">
+
+        <h3>
+          Gagal memuat lowongan
+        </h3>
+
+        <p>
+          ${escapeHtml(error.message)}
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+  }
+
+
+  jobs = data || [];
+
+  displayJobs(jobs);
+
+}
+
+
+/* =========================
+   SEARCH
+========================= */
+
+function searchJobs() {
+
+  const keyword =
+    document
+      .getElementById("searchInput")
+      .value
+      .trim()
+      .toLowerCase();
+
+
+  const location =
+    document
+      .getElementById("locationFilter")
+      .value;
+
+
+  const filtered =
+    jobs.filter(job => {
+
+      const title =
+        (job.title || "").toLowerCase();
+
+      const company =
+        (job.company || "").toLowerCase();
+
+      const keywordMatch =
+        title.includes(keyword) ||
+        company.includes(keyword);
+
+
+      const locationMatch =
+        location === "" ||
+        job.location === location;
+
+
+      return keywordMatch &&
+             locationMatch;
+
+    });
+
+
+  displayJobs(filtered);
+
+}
+
+
+/* =========================
+   DETAIL JOB
+========================= */
+
+function showJobDetail(jobId) {
+
+  const job =
+    jobs.find(
+      item => item.id === jobId
+    );
+
+
+  if (!job) {
+
+    alert("Lowongan tidak ditemukan.");
+
+    return;
+
+  }
+
+
+  document.getElementById(
+    "jobDetail"
+  ).innerHTML = `
+
+    <h2>
+      ${escapeHtml(job.title)}
+    </h2>
+
+    <p>
+      <strong>
+        Perusahaan:
+      </strong>
+      ${escapeHtml(job.company)}
+    </p>
+
+    <p>
+      <strong>
+        Lokasi:
+      </strong>
+      ${escapeHtml(job.location)}
+    </p>
+
+    <p>
+      <strong>
+        Gaji:
+      </strong>
+      ${escapeHtml(job.salary)}
+    </p>
+
+    <p>
+      <strong>
+        Deskripsi:
+      </strong>
+      ${escapeHtml(job.description)}
+    </p>
+
+    <br>
+
+    <button
+      class="submit-btn"
+      onclick="applyJob('${job.id}')">
+
+      Lamar Sekarang
+
+    </button>
+
+  `;
+
+
+  document.getElementById(
+    "detailModal"
+  ).style.display = "flex";
+
+}
+
+
+/* =========================
+   REGISTER MODAL
+========================= */
+
+function openRegister() {
+
+  document.getElementById(
+    "registerModal"
+  ).style.display = "flex";
+
+}
+
+
+/* =========================
+   LOGIN MODAL
+========================= */
+
+function openLogin() {
+
+  document.getElementById(
+    "loginModal"
+  ).style.display = "flex";
+
+}
+
+
+/* =========================
+   CLOSE MODAL
+========================= */
+
+function closeModal(id) {
+
+  document.getElementById(id)
+    .style.display = "none";
+
+}
+
+
+/* =========================
+   REGISTER
+========================= */
+
+document
+  .getElementById("registerForm")
+  .addEventListener(
+    "submit",
+    async function(event) {
+
+      event.preventDefault();
+
+
+      const name =
+        document
+          .getElementById("registerName")
+          .value
+          .trim();
+
+
+      const email =
+        document
+          .getElementById("registerEmail")
+          .value
+          .trim();
+
+
+      const password =
+        document
+          .getElementById("registerPassword")
+          .value;
+
+
+      if (password.length < 6) {
+
+        alert(
+          "Password minimal 6 karakter."
+        );
+
+        return;
+
+      }
+
+
+      const button =
+        event.target.querySelector(
+          "button[type='submit']"
+        );
+
+
+      button.disabled = true;
+      button.textContent = "Mendaftar...";
+
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient.auth.signUp({
+
+          email: email,
+
+          password: password,
+
+          options: {
+
+            data: {
+              name: name
+            }
+
+          }
+
+        });
+
+
+      button.disabled = false;
+      button.textContent =
+        "Daftar Sekarang";
+
+
+      if (error) {
+
+        alert(
+          "Gagal daftar: " +
+          error.message
+        );
+
+        return;
+
+      }
+
+
+      /*
+        Jika email confirmation dimatikan,
+        session langsung tersedia.
+      */
+
+      if (data.user && data.session) {
+
+        await ensureProfile(
+          data.user
+        );
+
+        currentUser =
+          data.user;
+
+        await loadCurrentProfile();
+
+        closeModal(
+          "registerModal"
+        );
+
+        updateHeader();
+
+        alert(
+          "Akun berhasil dibuat!"
+        );
+
+      }
+
+      else {
+
+        closeModal(
+          "registerModal"
+        );
+
+        alert(
+          "Akun berhasil dibuat. Cek email kamu untuk konfirmasi, lalu login."
+        );
+
+      }
+
+    }
+  );
+
+
+/* =========================
+   LOGIN
+========================= */
+
+document
+  .getElementById("loginForm")
+  .addEventListener(
+    "submit",
+    async function(event) {
+
+      event.preventDefault();
+
+
+      const email =
+        document
+          .getElementById("loginEmail")
+          .value
+          .trim();
+
+
+      const password =
+        document
+          .getElementById("loginPassword")
+          .value;
+
+
+      const button =
+        event.target.querySelector(
+          "button[type='submit']"
+        );
+
+
+      button.disabled = true;
+      button.textContent = "Login...";
+
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient.auth
+          .signInWithPassword({
+
+            email: email,
+
+            password: password
+
+          });
+
+
+      button.disabled = false;
+      button.textContent = "Login";
+
+
+      if (error) {
+
+        alert(
+          "Login gagal: " +
+          error.message
+        );
+
+        return;
+
+      }
+
+
+      currentUser =
+        data.user;
+
+
+      await ensureProfile(
+        currentUser
+      );
+
+      await loadCurrentProfile();
+
+
+      closeModal(
+        "loginModal"
+      );
+
+
+      updateHeader();
+
+
+      alert(
+        "Login berhasil!"
+      );
+
+    }
+  );
+
+
+/* =========================
+   ENSURE PROFILE
+========================= */
+
+async function ensureProfile(user) {
+
+  if (!user) {
+    return;
+  }
+
+
+  const {
+    data: existing,
+    error: selectError
+  } =
+    await supabaseClient
+      .from("profiles")
+      .select("id,name,role")
+      .eq("id", user.id)
+      .maybeSingle();
+
+
+  if (selectError) {
+
+    console.error(
+      "Gagal membaca profile:",
+      selectError
+    );
+
+    return;
+
+  }
+
+
+  if (existing) {
+
+    currentProfile =
+      existing;
+
+    return;
+
+  }
+
+
+  const name =
+    user.user_metadata?.name ||
+    user.email?.split("@")[0] ||
+    "Pengguna";
+
+
+  const {
+    data: created,
+    error
+  } =
+    await supabaseClient
+      .from("profiles")
+      .insert({
+
+        id: user.id,
+
+        name: name,
+
+        role: "jobseeker"
+
+      })
+      .select()
+      .single();
+
+
+  if (error) {
+
+    console.error(
+      "Gagal membuat profile:",
+      error
+    );
+
+    return;
+
+  }
+
+
+  currentProfile =
+    created;
+
+}
+
+
+/* =========================
+   LOAD PROFILE
+========================= */
+
+async function loadCurrentProfile() {
+
+  if (!currentUser) {
+    return;
+  }
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("profiles")
+      .select("id,name,role,created_at")
+      .eq("id", currentUser.id)
+      .maybeSingle();
+
+
+  if (error) {
+
+    console.error(
+      "Gagal mengambil profile:",
+      error
+    );
+
+    return;
+
+  }
+
+
+  currentProfile =
+    data;
+
+}
+
+
+/* =========================
+   UPDATE HEADER
+========================= */
+
+function updateHeader() {
+
+  const headerButtons =
+    document.getElementById(
+      "headerButtons"
+    );
+
+
+  if (currentUser) {
+
+    const name =
+      currentProfile?.name ||
+      currentUser.email ||
+      "Profil";
+
+
+    headerButtons.innerHTML = `
+
+      <button
+        class="profile-btn"
+        onclick="openProfile()">
+
+        👤 ${escapeHtml(name)}
+
+      </button>
+
+    `;
+
+  }
+
+  else {
+
+    headerButtons.innerHTML = `
+
+      <button
+        class="login-btn"
+        onclick="openLogin()">
+
+        Login
+
+      </button>
+
+      <button
+        class="register-btn"
+        onclick="openRegister()">
+
+        Daftar
+
+      </button>
+
+    `;
+
+  }
+
+}
+
+
+/* =========================
+   APPLY JOB
+========================= */
+
+async function applyJob(jobId) {
+
+  if (!currentUser) {
+
+    alert(
+      "Silakan login atau daftar terlebih dahulu."
+    );
+
+    closeModal(
+      "detailModal"
+    );
+
+    openLogin();
+
+    return;
+
+  }
+
+
+  const job =
+    jobs.find(
+      item => item.id === jobId
+    );
+
+
+  if (!job) {
+
+    alert(
+      "Lowongan tidak ditemukan."
+    );
+
+    return;
+
+  }
+
+
+  /*
+    Cek apakah sudah pernah melamar.
+  */
+
+  const {
+    data: existing,
+    error: checkError
+  } =
+    await supabaseClient
+      .from("applications")
+      .select("id")
+      .eq("job_id", jobId)
+      .eq("applicant_id", currentUser.id)
+      .maybeSingle();
+
+
+  if (checkError) {
+
+    alert(
+      "Gagal mengecek lamaran: " +
+      checkError.message
+    );
+
+    return;
+
+  }
+
+
+  if (existing) {
+
+    alert(
+      "Kamu sudah melamar pekerjaan ini."
+    );
+
+    return;
+
+  }
+
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from("applications")
+      .insert({
+
+        job_id: jobId,
+
+        applicant_id:
+          currentUser.id,
+
+        status: "Menunggu"
+
+      });
+
+
+  if (error) {
+
+    alert(
+      "Lamaran gagal dikirim: " +
+      error.message
+    );
+
+    return;
+
+  }
+
+
+  closeModal(
+    "detailModal"
+  );
+
+
+  alert(
+    "Lamaran berhasil dikirim!"
+  );
+
+}
+
+
+/* =========================
+   PROFILE
+========================= */
+
+async function openProfile() {
+
+  if (!currentUser) {
+
+    return;
+
+  }
+
+
+  await loadCurrentProfile();
+
+
+  const name =
+    currentProfile?.name ||
+    currentUser.email ||
+    "Pengguna";
+
+
+  document.getElementById(
+    "profileInfo"
+  ).innerHTML = `
+
+    <p>
+      <strong>
+        Nama:
+      </strong>
+      ${escapeHtml(name)}
+    </p>
+
+    <p>
+      <strong>
+        Email:
+      </strong>
+      ${escapeHtml(currentUser.email)}
+    </p>
+
+  `;
+
+
+  const list =
+    document.getElementById(
+      "applicationList"
+    );
+
+
+  list.innerHTML = `
+
+    <p>
+      Memuat riwayat lamaran...
+    </p>
+
+  `;
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("applications")
+      .select(`
+        id,
+        status,
+        created_at,
+        job:jobs (
+          title,
+          company,
+          location,
+          salary
+        )
+      `)
+      .eq(
+        "applicant_id",
+        currentUser.id
+      )
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      );
+
+
+  if (error) {
+
+    console.error(error);
+
+    list.innerHTML = `
+
+      <p class="error-message">
+        Gagal mengambil riwayat:
+        ${escapeHtml(error.message)}
+      </p>
+
+    `;
+
+  }
+
+  else if (!data || data.length === 0) {
+
+    list.innerHTML = `
+
+      <p>
+        Belum ada lamaran.
+      </p>
+
+    `;
+
+  }
+
+  else {
+
+    list.innerHTML = "";
+
+
+    data.forEach(application => {
+
+      const job =
+        application.job;
+
+
+      list.innerHTML += `
+
+        <div class="application">
+
+          <strong>
+            ${escapeHtml(
+              job?.title || "Lowongan"
+            )}
+          </strong>
+
+          <p>
+            ${escapeHtml(
+              job?.company || "-"
+            )}
+          </p>
+
+          <p>
+            📍 ${escapeHtml(
+              job?.location || "-"
+            )}
+          </p>
+
+          <span class="status">
+            ${escapeHtml(
+              application.status || "Menunggu"
+            )}
+          </span>
+
+        </div>
+
+      `;
+
+    });
+
+  }
+
+
+  document.getElementById(
+    "profileModal"
+  ).style.display = "flex";
+
+}
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+async function logout() {
+
+  const {
+    error
+  } =
+    await supabaseClient.auth.signOut();
+
+
+  if (error) {
+
+    alert(
+      "Logout gagal: " +
+      error.message
+    );
+
+    return;
+
+  }
+
+
+  currentUser = null;
+
+  currentProfile = null;
+
+
+  closeModal(
+    "profileModal"
+  );
+
+
+  updateHeader();
+
+
+  alert(
+    "Kamu sudah logout."
+  );
+
+}
+
+
+/* =========================
+   SAVE JOB
+========================= */
+
+function saveJob(jobId) {
+
+  if (!currentUser) {
+
+    alert(
+      "Login terlebih dahulu untuk menyimpan lowongan."
+    );
+
+    openLogin();
+
+    return;
+
+  }
+
+
+  /*
+    Untuk V4 awal, lowongan tersimpan
+    masih menggunakan localStorage.
+
+    Nanti bisa dibuat tabel saved_jobs
+    di Supabase.
+  */
+
+  let saved =
+    JSON.parse(
+      localStorage.getItem(
+        "lokerSavedJobs"
+      )
+    ) || [];
+
+
+  const job =
+    jobs.find(
+      item => item.id === jobId
+    );
+
+
+  if (!job) {
+
+    return;
+
+  }
+
+
+  const exists =
+    saved.some(
+      item =>
+        item.id === job.id
+    );
+
+
+  if (exists) {
+
+    alert(
+      "Lowongan sudah tersimpan."
+    );
+
+    return;
+
+  }
+
+
+  saved.push(job);
+
+
+  localStorage.setItem(
+    "lokerSavedJobs",
+    JSON.stringify(saved)
+  );
+
+
+  alert(
+    "Lowongan berhasil disimpan ❤️"
+  );
+
+}
+
+
+/* =========================
+   ESCAPE HTML
+========================= */
+
+function escapeHtml(value) {
+
+  if (value === null ||
+      value === undefined) {
+
+    return "";
+
+  }
+
+
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
+}
+
+
+/* =========================
+   CLOSE WHEN CLICK OUTSIDE
+========================= */
+
+window.onclick =
+  function(event) {
+
+    if (
+      event.target.classList
+        .contains("modal")
+    ) {
+
+      event.target.style.display =
+        "none";
+
+    }
+
+  };
+
+
+/* =========================
+   AUTH STATE
+========================= */
+
+supabaseClient.auth
+  .getSession()
+  .then(async ({ data }) => {
+
+    if (data.session) {
+
+      currentUser =
+        data.session.user;
+
+      await ensureProfile(
+        currentUser
+      );
+
+      await loadCurrentProfile();
+
+    }
+
+    updateHeader();
+
+  });
+
+
+supabaseClient.auth
+  .onAuthStateChange(
+    async (event, session) => {
+
+      if (session) {
+
+        currentUser =
+          session.user;
+
+        await ensureProfile(
+          currentUser
+        );
+
+        await loadCurrentProfile();
+
+      }
+
+      else {
+
+        currentUser = null;
+
+        currentProfile = null;
+
+      }
+
+      updateHeader();
+
+    }
+  );
+
+
+/* =========================
+   START
+========================= */
+
+loadJobs();
+
+updateHeader();
+
+</script>
+
+</body>
+</html>
